@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temperature and Humidity Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h1>Temperature and Humidity Data</h1>
+  <table id="data-table">
+    <tr>
+      <th>Date and Time</th>
+      <th>Temperature (°C)</th>
+      <th>Humidity (%)</th>
+    </tr>
+  </table>
+  <script>
+    const sheetUrl = 'https://script.google.com/macros/s/AKfycbxa9hEKT_kAqJtmYdmGUISK7ZRAuzYiJZU4wTFWPgAumij7zEkZ2MhJSzkddwzzvWjvag/exec';  // Reemplaza con el URL de tu script
+
+    async function fetchData() {
+      try {
+        const response = await fetch(sheetUrl);
+        const data = await response.json();
+        const table = document.getElementById('data-table');
+
+        data.forEach(item => {
+          const row = table.insertRow();
+          const cell1 = row.insertCell(0);
+          const cell2 = row.insertCell(1);
+          const cell3 = row.insertCell(2);
+
+          cell1.textContent = new Date(item.date).toLocaleString();
+          cell2.textContent = item.temperature;
+          cell3.textContent = item.humidity;
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    fetchData();
+  </script>
+</body>
+</html>
